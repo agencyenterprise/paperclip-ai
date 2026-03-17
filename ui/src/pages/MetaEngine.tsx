@@ -13,6 +13,12 @@ import {
   companySlug,
   alignmentScoreColor,
   alignmentScoreLabel,
+  COMPANY_STATES,
+  STATE_LABELS,
+  STATE_NEXT_ACTION,
+  STATE_COLORS,
+  stateIndex,
+  type CompanyState,
 } from "../lib/meta-engine";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,7 +31,7 @@ import {
 import {
   Zap,
   Rocket,
-  ArrowUpRight,
+  ArrowRight,
   Loader2,
   Building2,
   Target,
@@ -33,6 +39,8 @@ import {
   Cpu,
   ExternalLink,
   ChevronRight,
+  Users,
+  AlertCircle,
 } from "lucide-react";
 
 const BHAG = {
@@ -44,6 +52,45 @@ const BHAG = {
     { icon: Target, label: "Avoid fragility", sub: "coordination failures stop misaligned systems" },
   ],
 };
+
+function StatePill({ state }: { state: CompanyState }) {
+  const colorClass = STATE_COLORS[state];
+  const label = STATE_LABELS[state];
+  return (
+    <span className={`inline-flex items-center gap-1 text-xs font-semibold ${colorClass}`}>
+      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+      {label}
+    </span>
+  );
+}
+
+function StateProgressBar({ state }: { state: CompanyState }) {
+  const idx = stateIndex(state);
+  const pct = Math.round(((idx + 1) / COMPANY_STATES.length) * 100);
+
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>S{idx} — {STATE_LABELS[state]}</span>
+        <span>{pct}%</span>
+      </div>
+      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${
+            idx >= 6
+              ? "bg-green-500"
+              : idx >= 4
+                ? "bg-blue-500"
+                : idx >= 2
+                  ? "bg-yellow-500"
+                  : "bg-muted-foreground"
+          }`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export function MetaEngine() {
   const { companies } = useCompany();
@@ -62,15 +109,16 @@ export function MetaEngine() {
     (c) => c.name.toLowerCase().includes("meta engine") || c.issuePrefix === "MET",
   );
 
-  // Portfolio: companies with meta-engine front-matter
+  // Portfolio: companies with meta-engine front-matter, sorted by state (most advanced first)
   const portfolioCompanies = companies
     .filter((c) => {
       const meta = parseMetaEngineMeta(c.description);
       return meta.isMetaEngine;
     })
-    .map((c) => ({ company: c, meta: parseMetaEngineMeta(c.description) }));
+    .map((c) => ({ company: c, meta: parseMetaEngineMeta(c.description) }))
+    .sort((a, b) => stateIndex(b.meta.state) - stateIndex(a.meta.state));
 
-  // Meta Engine agents — find Strategist for auto-assign
+  // Meta Engine agents
   const { data: metaAgents } = useQuery({
     queryKey: queryKeys.agents.list(metaEngineCompany?.id ?? ""),
     queryFn: () => agentsApi.list(metaEngineCompany!.id),
@@ -81,7 +129,7 @@ export function MetaEngine() {
     (a) => a.name.toLowerCase().includes("strategist"),
   );
 
-  // Meta Engine activity (recent issues)
+  // Meta Engine activity
   const { data: metaIssues } = useQuery({
     queryKey: metaEngineCompany
       ? queryKeys.issues.list(metaEngineCompany.id)
@@ -94,7 +142,7 @@ export function MetaEngine() {
     (i) => i.status === "in_progress" || i.status === "todo",
   );
 
-  // Launch mutation — create "Do it" issue assigned to Strategist
+  // Launch mutation
   const launchMutation = useMutation({
     mutationFn: () => {
       if (!metaEngineCompany) throw new Error("Meta Engine company not found");
@@ -125,6 +173,17 @@ export function MetaEngine() {
     queryFn: () => companiesApi.stats(),
   });
 
+  // Portfolio KPI summary
+  const deployedCount = portfolioCompanies.filter(
+    (p) => stateIndex(p.meta.state) >= 4,
+  ).length;
+  const engagedCount = portfolioCompanies.filter(
+    (p) => stateIndex(p.meta.state) >= 5,
+  ).length;
+  const revenueCount = portfolioCompanies.filter(
+    (p) => stateIndex(p.meta.state) >= 6,
+  ).length;
+
   return (
     <div className="max-w-5xl mx-auto space-y-10 pb-16">
 
@@ -142,7 +201,6 @@ export function MetaEngine() {
           </div>
         </div>
 
-        {/* Pillars */}
         <div className="grid grid-cols-3 gap-3 mt-6">
           {BHAG.pillars.map(({ icon: Icon, label, sub }) => (
             <div
@@ -161,35 +219,77 @@ export function MetaEngine() {
         </div>
       </div>
 
-      {/* ── Stats bar ─────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-4">
+      {/* ── KPI bar ───────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-4 gap-4">
         {[
           {
-            label: "Companies deployed",
-            value: portfolioCompanies.length,
-            sub: "autonomous businesses",
+            label: "Deployed",
+            value: deployedCount,
+            sub: "reached S4+",
+            warn: false,
           },
           {
-            label: "Active builds",
+            label: "First Engagement",
+            value: engagedCount,
+            sub: "reached S5+",
+            warn: engagedCount === 0,
+          },
+          {
+            label: "First Revenue",
+            value: revenueCount,
+            sub: "reached S6+",
+            warn: revenueCount === 0,
+          },
+          {
+            label: "Active Builds",
             value: activeBuilds.length,
-            sub: activeBuilds.length > 0 ? "in progress now" : "idle",
+            sub: activeBuilds.length > 0 ? "in progress" : "idle",
+            warn: false,
           },
-          {
-            label: "Automation target",
-            value: "70–95%",
-            sub: "of full business lifecycle",
-          },
-        ].map(({ label, value, sub }) => (
+        ].map(({ label, value, sub, warn }) => (
           <div
             key={label}
-            className="border border-border rounded-lg p-4 bg-card"
+            className={`border rounded-lg p-4 bg-card ${warn ? "border-yellow-500/40" : "border-border"}`}
           >
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">{label}</p>
-            <p className="text-3xl font-bold mt-1">{value}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide flex items-center gap-1">
+              {label}
+              {warn && <AlertCircle className="h-3 w-3 text-yellow-500" />}
+            </p>
+            <p className={`text-3xl font-bold mt-1 ${warn ? "text-yellow-600 dark:text-yellow-400" : ""}`}>
+              {value}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">{sub}</p>
           </div>
         ))}
       </div>
+
+      {/* ── Pipeline agents ───────────────────────────────────────────── */}
+      {metaAgents && metaAgents.length > 0 && (
+        <div>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+            Pipeline agents
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {metaAgents.map((agent) => (
+              <span
+                key={agent.id}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
+                  agent.status === "running"
+                    ? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
+                    : "bg-muted border-border text-muted-foreground"
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    agent.status === "running" ? "bg-blue-500 animate-pulse" : "bg-muted-foreground"
+                  }`}
+                />
+                {agent.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Active builds ─────────────────────────────────────────────── */}
       {activeBuilds.length > 0 && (
@@ -296,8 +396,12 @@ export function MetaEngine() {
                     </Link>
                   </div>
 
-                  {/* Market + alignment */}
+                  {/* State progress bar */}
+                  <StateProgressBar state={meta.state} />
+
+                  {/* Badges */}
                   <div className="flex flex-wrap gap-2">
+                    <StatePill state={meta.state} />
                     {meta.market && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-muted text-muted-foreground font-medium">
                         {meta.market}
@@ -307,19 +411,25 @@ export function MetaEngine() {
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted ${alignmentScoreColor(meta.alignmentScore)}`}
                       >
-                        ⬡ Alignment: {meta.alignmentScore}/50 · {alignmentScoreLabel(meta.alignmentScore)}
+                        ⬡ {meta.alignmentScore}/50 · {alignmentScoreLabel(meta.alignmentScore)}
                       </span>
                     )}
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        company.status === "active"
-                          ? "bg-green-500/10 text-green-600 dark:text-green-400"
-                          : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      {company.status}
-                    </span>
                   </div>
+
+                  {/* Agent team chips */}
+                  {meta.agents.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Users className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      {meta.agents.map((agent) => (
+                        <span
+                          key={agent}
+                          className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium"
+                        >
+                          {agent}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Alignment connection */}
                   {meta.alignmentConnection && (
@@ -328,7 +438,16 @@ export function MetaEngine() {
                     </p>
                   )}
 
-                  {/* Footer: stats + CTA */}
+                  {/* What's next */}
+                  <div className="flex items-start gap-2 px-3 py-2 rounded-md bg-muted/50 border border-border">
+                    <ArrowRight className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                    <p className="text-xs text-foreground/80">
+                      <span className="font-medium text-primary">Next: </span>
+                      {STATE_NEXT_ACTION[meta.state]}
+                    </p>
+                  </div>
+
+                  {/* Footer */}
                   <div className="flex items-center justify-between mt-auto pt-1 border-t border-border">
                     <span className="text-xs text-muted-foreground">
                       {companyStats?.agentCount ?? 0} agents ·{" "}
@@ -349,7 +468,60 @@ export function MetaEngine() {
         )}
       </div>
 
-      {/* ── Recent Meta Engine activity ───────────────────────────────── */}
+      {/* ── Company lifecycle legend ───────────────────────────────────── */}
+      <div>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+          Company lifecycle
+        </h2>
+        <div className="border border-border rounded-lg overflow-hidden">
+          {COMPANY_STATES.map((state, idx) => {
+            const companiesInState = portfolioCompanies.filter(
+              (p) => p.meta.state === state,
+            );
+            return (
+              <div
+                key={state}
+                className={`flex items-center gap-3 px-4 py-2.5 ${
+                  idx < COMPANY_STATES.length - 1 ? "border-b border-border" : ""
+                } ${companiesInState.length > 0 ? "bg-primary/5" : "bg-card"}`}
+              >
+                <span className="text-xs font-mono text-muted-foreground w-4 shrink-0">
+                  S{idx}
+                </span>
+                <span
+                  className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                    idx >= 6
+                      ? "bg-green-500"
+                      : idx >= 4
+                        ? "bg-blue-500"
+                        : idx >= 2
+                          ? "bg-yellow-500"
+                          : "bg-muted-foreground"
+                  }`}
+                />
+                <span className="text-sm font-medium w-36 shrink-0">{STATE_LABELS[state]}</span>
+                <span className="text-xs text-muted-foreground flex-1 hidden sm:block truncate">
+                  {STATE_NEXT_ACTION[state]}
+                </span>
+                {companiesInState.length > 0 && (
+                  <div className="flex gap-1 shrink-0 flex-wrap">
+                    {companiesInState.map((p) => (
+                      <span
+                        key={p.company.id}
+                        className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium"
+                      >
+                        {p.company.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Recent activity ───────────────────────────────────────────── */}
       {metaIssues && metaIssues.length > 0 && (
         <div>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
@@ -393,10 +565,27 @@ export function MetaEngine() {
           </DialogHeader>
           <div className="space-y-4 pt-2">
             <p className="text-sm text-muted-foreground">
-              The Meta-Engine will autonomously find a market, build the product, and deploy
-              it as a live Paperclip company. This takes 5–15 minutes.
+              The Meta-Engine will autonomously find a market, build the product, and drive it to{" "}
+              <span className="font-medium text-foreground">S5 First Engagement</span>. Target: 14 days.
             </p>
-            {/* Assignee indicator */}
+
+            {/* Pipeline overview */}
+            <div className="rounded-md bg-muted/50 border border-border px-3 py-2 space-y-1">
+              <p className="text-xs font-medium text-foreground mb-1.5">Full pipeline</p>
+              {[
+                "Researcher → scores 3 opportunities (anti-signaling filter)",
+                "Strategist → selects highest AdjustedScore",
+                "Builder → builds + passes 4 release gates → S3",
+                "OfferDesigner → packages pilot/standard/premium",
+                "OutboundCloser → drives to first revenue → S6",
+              ].map((step, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="w-4 text-right shrink-0 font-mono">{i + 1}.</span>
+                  <span>{step}</span>
+                </div>
+              ))}
+            </div>
+
             <div className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium ${
               strategist
                 ? "bg-green-500/10 text-green-700 dark:text-green-400"
@@ -405,22 +594,24 @@ export function MetaEngine() {
               {strategist ? (
                 <>✓ Will be assigned to <strong>{strategist.name}</strong> automatically</>
               ) : (
-                <>⚠ Strategist agent not found — issue will be created unassigned</>
+                <>⚠ Strategist not found — issue will be created unassigned</>
               )}
             </div>
+
             <div className="space-y-1.5">
               <label className="text-sm font-medium">
                 Context{" "}
                 <span className="text-muted-foreground font-normal">(optional)</span>
               </label>
               <Textarea
-                placeholder="e.g. focus on healthcare compliance, or try a SaaS sector, or anything you want the Researcher to consider..."
+                placeholder="e.g. focus on autonomous-close markets, prioritize healthcare, avoid enterprise procurement cycles..."
                 value={context}
                 onChange={(e) => setContext(e.target.value)}
-                rows={4}
+                rows={3}
                 className="text-sm resize-none"
               />
             </div>
+
             <div className="flex items-center gap-2 justify-end">
               <Button variant="outline" size="sm" onClick={() => setLaunchOpen(false)}>
                 Cancel
@@ -443,6 +634,7 @@ export function MetaEngine() {
                 )}
               </Button>
             </div>
+
             {launchMutation.error && (
               <p className="text-xs text-destructive">
                 {launchMutation.error instanceof Error
