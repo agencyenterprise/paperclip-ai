@@ -154,19 +154,19 @@ export function companySlug(name: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** Score colour based on 0–50 scale */
+/** Score colour based on 0–10 scale */
 export function alignmentScoreColor(score: number | null): string {
   if (score === null) return "text-muted-foreground";
-  if (score >= 40) return "text-green-600 dark:text-green-400";
-  if (score >= 25) return "text-yellow-600 dark:text-yellow-400";
+  if (score >= 8) return "text-green-600 dark:text-green-400";
+  if (score >= 5) return "text-yellow-600 dark:text-yellow-400";
   return "text-red-600 dark:text-red-400";
 }
 
 /** Score label */
 export function alignmentScoreLabel(score: number | null): string {
   if (score === null) return "—";
-  if (score >= 40) return "High";
-  if (score >= 25) return "Medium";
+  if (score >= 8) return "High";
+  if (score >= 5) return "Medium";
   return "Low";
 }
 

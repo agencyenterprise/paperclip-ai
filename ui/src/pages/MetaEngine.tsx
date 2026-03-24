@@ -112,6 +112,7 @@ export function MetaEngine() {
   // Portfolio: companies with meta-engine front-matter, sorted by state (most advanced first)
   const portfolioCompanies = companies
     .filter((c) => {
+      if (c.status === "archived") return false;
       const meta = parseMetaEngineMeta(c.description);
       return meta.isMetaEngine;
     })
@@ -411,7 +412,7 @@ export function MetaEngine() {
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted ${alignmentScoreColor(meta.alignmentScore)}`}
                       >
-                        ⬡ {meta.alignmentScore}/50 · {alignmentScoreLabel(meta.alignmentScore)}
+                        ⬡ {meta.alignmentScore}/10 · {alignmentScoreLabel(meta.alignmentScore)}
                       </span>
                     )}
                   </div>

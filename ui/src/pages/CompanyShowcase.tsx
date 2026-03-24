@@ -320,7 +320,7 @@ function UnderwritingShowcase({ company, meta }: ShowcaseProps) {
             <div className="mt-10 flex gap-4">
               <a href="#contact">
                 <button className="px-8 py-4 rounded-full bg-[#c2440f] text-white font-bold text-sm hover:bg-[#d4521e] hover:shadow-[0_0_40px_rgba(194,68,15,.45)] transition-all active:scale-95">
-                  Get early access →
+                  Open app →
                 </button>
               </a>
               <a href="#process">
@@ -463,7 +463,7 @@ function UnderwritingShowcase({ company, meta }: ShowcaseProps) {
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 60%, #7c2d12 0%, #080603 65%)" }} />
         <div className="relative max-w-xl mx-auto text-center space-y-7">
           <h2 className="text-5xl font-black text-white leading-tight">Start reviewing submissions today.</h2>
-          <p className="text-white/40">Join the early access list. We'll reach out within 24 hours.</p>
+          <p className="text-white/40">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="you@carrier.com" className="flex-1 max-w-xs bg-white/8 border border-white/12 rounded-full px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#c2440f]/60 transition-all" />
             <button className="px-7 py-3.5 rounded-full bg-[#c2440f] text-white font-bold text-sm hover:bg-[#d4521e] hover:shadow-[0_0_40px_rgba(194,68,15,.5)] transition-all">Notify me</button>
@@ -504,7 +504,7 @@ function UndNav({ name }: { name: string }) {
         <div className="flex items-center gap-5">
           <a href="#demo" className="text-white/40 text-sm hover:text-white/70 transition-colors hidden sm:block">Demo</a>
           <a href="#process" className="text-white/40 text-sm hover:text-white/70 transition-colors hidden sm:block">How it works</a>
-          <a href="#contact"><button className="px-5 py-2 rounded-full bg-[#c2440f] text-white text-xs font-bold hover:bg-[#d4521e] transition-all">Get early access</button></a>
+          <a href="#contact"><button className="px-5 py-2 rounded-full bg-[#c2440f] text-white text-xs font-bold hover:bg-[#d4521e] transition-all">Sign up free</button></a>
         </div>
       </div>
     </nav>
@@ -599,7 +599,7 @@ function TprmShowcase({ company, meta }: ShowcaseProps) {
               {meta.plainDescription || "An AI operator that scans every vendor across every risk domain — and only asserts what it can actually verify."}
             </p>
             <div className="mt-10 flex gap-4 font-sans">
-              <a href="#contact"><button className="px-7 py-3.5 rounded-lg bg-[#06b6d4] text-black font-bold text-sm hover:bg-[#22d3ee] transition-all active:scale-95">Get early access</button></a>
+              <a href="#contact"><button className="px-7 py-3.5 rounded-lg bg-[#06b6d4] text-black font-bold text-sm hover:bg-[#22d3ee] transition-all active:scale-95">Sign up free</button></a>
               <a href="#process"><button className="px-7 py-3.5 rounded-lg border border-white/12 text-white/45 font-semibold text-sm hover:border-[#06b6d4]/40 hover:text-[#06b6d4] transition-all">How it works</button></a>
             </div>
           </div>
@@ -748,7 +748,7 @@ function TprmShowcase({ company, meta }: ShowcaseProps) {
         <div className="absolute inset-0 opacity-[.05]"><svg className="w-full h-full"><rect width="100%" height="100%" fill="url(#hex)" /></svg></div>
         <div className="relative max-w-xl mx-auto text-center space-y-7">
           <h2 className="text-4xl font-black text-white">Map your vendor risk. Automatically.</h2>
-          <p className="text-white/35">Join the early access list. We'll reach out within 24 hours.</p>
+          <p className="text-white/35">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="security@company.com" className="flex-1 max-w-xs bg-white/5 border border-white/10 rounded-lg px-5 py-3.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#06b6d4]/50 transition-all" />
             <button className="px-7 py-3.5 rounded-lg bg-[#06b6d4] text-black font-bold text-sm hover:bg-[#22d3ee] transition-all">Notify me</button>
@@ -769,7 +769,7 @@ function TprmNav({ name }: { name: string }) {
         <span className="font-black text-sm text-white tracking-tight font-sans">{name}</span>
         <div className="flex items-center gap-5">
           <a href="#demo" className="text-white/35 text-sm hover:text-white/60 transition-colors hidden sm:block font-sans">Demo</a>
-          <a href="#contact"><button className="px-5 py-2 rounded-lg bg-[#06b6d4] text-black text-xs font-bold hover:bg-[#22d3ee] transition-all">Get early access</button></a>
+          <a href="#contact"><button className="px-5 py-2 rounded-lg bg-[#06b6d4] text-black text-xs font-bold hover:bg-[#22d3ee] transition-all">Sign up free</button></a>
         </div>
       </div>
     </nav>
@@ -842,7 +842,7 @@ function EsgShowcase({ company, meta }: ShowcaseProps) {
               ))}
             </div>
             <div className="mt-10 flex gap-4">
-              <a href="#contact"><button className="px-8 py-4 rounded-full bg-white text-[#14532d] font-black text-sm hover:bg-[#f0fdf4] hover:shadow-[0_0_40px_rgba(255,255,255,.3)] transition-all active:scale-95">Get early access</button></a>
+              <a href="#contact"><button className="px-8 py-4 rounded-full bg-white text-[#14532d] font-black text-sm hover:bg-[#f0fdf4] hover:shadow-[0_0_40px_rgba(255,255,255,.3)] transition-all active:scale-95">Sign up free</button></a>
               <a href="#process"><button className="px-8 py-4 rounded-full border border-white/20 text-white/60 text-sm font-semibold hover:border-white/40 hover:text-white/90 transition-all">How it works</button></a>
             </div>
           </div>
@@ -983,7 +983,7 @@ function EsgShowcase({ company, meta }: ShowcaseProps) {
         <svg className="absolute inset-0 w-full h-full opacity-[.05] pointer-events-none"><rect width="100%" height="100%" fill="url(#leaf)" /></svg>
         <div className="relative max-w-xl mx-auto text-center space-y-7">
           <h2 className="text-4xl font-extrabold text-white">Start verifying disclosures today.</h2>
-          <p className="text-white/45">Join the early access list. We'll reach out within 24 hours.</p>
+          <p className="text-white/45">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="you@company.com" className="flex-1 max-w-xs bg-white/10 border border-white/20 rounded-full px-5 py-3.5 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-white/50 transition-all" />
             <button className="px-7 py-3.5 rounded-full bg-white text-[#14532d] font-bold text-sm hover:bg-[#f0fdf4] hover:shadow-[0_0_30px_rgba(255,255,255,.25)] transition-all">Notify me</button>
@@ -1002,7 +1002,7 @@ function EsgNav({ name }: { name: string }) {
     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${s ? "bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm" : "bg-transparent"}`}>
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <span className={`font-bold text-sm transition-colors ${s ? "text-gray-900" : "text-white"}`}>{name}</span>
-        <a href="#contact"><button className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${s ? "bg-[#15803d] text-white hover:bg-[#166534]" : "bg-white text-[#14532d] hover:bg-[#f0fdf4]"}`}>Get early access</button></a>
+        <a href="#contact"><button className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${s ? "bg-[#15803d] text-white hover:bg-[#166534]" : "bg-white text-[#14532d] hover:bg-[#f0fdf4]"}`}>Sign up free</button></a>
       </div>
     </nav>
   );
@@ -1075,7 +1075,7 @@ function MedicalShowcase({ company, meta }: ShowcaseProps) {
             {meta.plainDescription || "An AI operator that cross-references every CPT and ICD-10 code against clinical documentation — and escalates what it can't verify."}
           </p>
           <div className="mt-10 flex gap-4 justify-center">
-            <a href="#contact"><button className="px-8 py-4 rounded-xl bg-[#0f766e] text-white font-bold text-sm hover:bg-[#0d9488] hover:shadow-[0_4px_30px_rgba(15,118,110,.4)] transition-all active:scale-95">Get early access →</button></a>
+            <a href="#contact"><button className="px-8 py-4 rounded-xl bg-[#0f766e] text-white font-bold text-sm hover:bg-[#0d9488] hover:shadow-[0_4px_30px_rgba(15,118,110,.4)] transition-all active:scale-95">Open app →</button></a>
             <a href="#process"><button className="px-8 py-4 rounded-xl border border-gray-200 text-gray-500 font-semibold text-sm hover:border-[#0f766e]/40 hover:text-[#0f766e] transition-all">How it works</button></a>
           </div>
         </div>
@@ -1217,7 +1217,7 @@ function MedicalShowcase({ company, meta }: ShowcaseProps) {
       <section id="contact" className="py-28 px-6 bg-[#0f766e]">
         <div className="max-w-xl mx-auto text-center space-y-7">
           <h2 className="text-4xl font-extrabold text-white">Recover revenue. Reduce audit risk.</h2>
-          <p className="text-white/55">Join the early access list. We'll reach out within 24 hours.</p>
+          <p className="text-white/55">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="billing@practice.com" className="flex-1 max-w-xs bg-white/12 border border-white/20 rounded-xl px-5 py-3.5 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-white/50 transition-all" />
             <button className="px-7 py-3.5 rounded-xl bg-white text-[#0f766e] font-bold text-sm hover:bg-gray-50 hover:shadow-lg transition-all">Notify me</button>
@@ -1236,7 +1236,7 @@ function MedNav({ name }: { name: string }) {
     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${s ? "bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm" : "bg-transparent"}`}>
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <span className={`font-bold text-sm transition-colors ${s ? "text-gray-900" : "text-[#0f766e]"}`}>{name}</span>
-        <a href="#contact"><button className="px-5 py-2 rounded-xl bg-[#0f766e] text-white text-xs font-bold hover:bg-[#0d9488] transition-all">Get early access</button></a>
+        <a href="#contact"><button className="px-5 py-2 rounded-xl bg-[#0f766e] text-white text-xs font-bold hover:bg-[#0d9488] transition-all">Sign up free</button></a>
       </div>
     </nav>
   );
@@ -1308,7 +1308,7 @@ function ComplianceShowcase({ company, meta }: ShowcaseProps) {
               {meta.plainDescription || "An AI operator that maps your evidence to every control, flags every gap, and delivers an audit-ready report in 24 hours — not 6 months."}
             </p>
             <div className="mt-8 flex gap-4">
-              <a href="#contact"><button className="px-8 py-4 rounded-xl bg-[#f59e0b] text-black font-bold text-sm hover:bg-[#fbbf24] hover:shadow-[0_4px_30px_rgba(245,158,11,.4)] transition-all active:scale-95">Get early access →</button></a>
+              <a href="#contact"><button className="px-8 py-4 rounded-xl bg-[#f59e0b] text-black font-bold text-sm hover:bg-[#fbbf24] hover:shadow-[0_4px_30px_rgba(245,158,11,.4)] transition-all active:scale-95">Open app →</button></a>
               <a href="#process"><button className="px-8 py-4 rounded-xl border border-white/12 text-white/45 font-semibold text-sm hover:border-[#f59e0b]/40 hover:text-[#f59e0b] transition-all">How it works</button></a>
             </div>
 
@@ -1470,7 +1470,7 @@ function ComplianceShowcase({ company, meta }: ShowcaseProps) {
         <div className="absolute inset-0 opacity-[.04]"><svg className="w-full h-full"><rect width="100%" height="100%" fill="url(#cdocs)" /></svg></div>
         <div className="relative max-w-xl mx-auto text-center space-y-7">
           <h2 className="text-4xl font-black text-white">From evidence chaos to audit-ready.</h2>
-          <p className="text-white/40">Join the early access list. We'll reach out within 24 hours.</p>
+          <p className="text-white/40">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="security@company.com" className="flex-1 max-w-xs bg-white/8 border border-white/12 rounded-xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#f59e0b]/60 transition-all" />
             <button className="px-7 py-3.5 rounded-xl bg-[#f59e0b] text-black font-bold text-sm hover:bg-[#fbbf24] hover:shadow-[0_0_30px_rgba(245,158,11,.4)] transition-all">Notify me</button>
@@ -1489,7 +1489,7 @@ function CompNav({ name }: { name: string }) {
     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${s ? "bg-[#0b1628]/95 backdrop-blur border-b border-white/6" : "bg-transparent"}`}>
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <span className="font-black text-sm text-white">{name}</span>
-        <a href="#contact"><button className="px-5 py-2 rounded-xl bg-[#f59e0b] text-black text-xs font-bold hover:bg-[#fbbf24] transition-all">Get early access</button></a>
+        <a href="#contact"><button className="px-5 py-2 rounded-xl bg-[#f59e0b] text-black text-xs font-bold hover:bg-[#fbbf24] transition-all">Sign up free</button></a>
       </div>
     </nav>
   );
@@ -1606,7 +1606,7 @@ function DefaultShowcase({ company, meta }: ShowcaseProps) {
           <span className="font-black text-sm text-gray-900 tracking-tight">{company.name}</span>
           <div className="flex items-center gap-5">
             <a href="#demo" className="text-sm text-gray-400 hover:text-gray-700 hidden sm:block transition-colors">See demo</a>
-            <a href="#contact"><button className="px-5 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all">Get early access</button></a>
+            <a href="#contact"><button className="px-5 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all">Sign up free</button></a>
           </div>
         </div>
       </nav>
@@ -1636,7 +1636,7 @@ function DefaultShowcase({ company, meta }: ShowcaseProps) {
               {meta.plainDescription || "An AI operator built on uncertainty gating — every finding has a confidence score, and agents escalate what they can't verify."}
             </p>
             <div className="mt-10 flex gap-4">
-              <a href="#contact"><button className="px-8 py-4 rounded-full bg-white text-indigo-900 font-black text-sm hover:bg-indigo-50 hover:shadow-[0_0_40px_rgba(255,255,255,.25)] transition-all active:scale-95">Get early access →</button></a>
+              <a href="#contact"><button className="px-8 py-4 rounded-full bg-white text-indigo-900 font-black text-sm hover:bg-indigo-50 hover:shadow-[0_0_40px_rgba(255,255,255,.25)] transition-all active:scale-95">Open app →</button></a>
               <a href="#demo"><button className="px-8 py-4 rounded-full border border-white/15 text-white/55 font-semibold text-sm hover:border-white/30 hover:text-white/90 transition-all">See it live</button></a>
             </div>
             <div className="mt-12 flex gap-10">
@@ -1761,8 +1761,8 @@ function DefaultShowcase({ company, meta }: ShowcaseProps) {
       {/* CTA */}
       <section id="contact" className="py-28 px-6" style={{ background: "linear-gradient(135deg, #1e1b4b, #4338ca)" }}>
         <div className="max-w-xl mx-auto text-center space-y-7">
-          <h2 className="text-4xl font-black text-white">Get early access to {company.name}.</h2>
-          <p className="text-white/45">Join the early access list. We'll reach out within 24 hours.</p>
+          <h2 className="text-4xl font-black text-white">Use {company.name}.</h2>
+          <p className="text-white/45">Create a free account and start immediately.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <input type="email" placeholder="you@company.com" className="flex-1 max-w-xs bg-white/10 border border-white/15 rounded-full px-5 py-3.5 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-white/40 transition-all" />
             <button className="px-7 py-3.5 rounded-full bg-white text-indigo-900 font-bold text-sm hover:bg-indigo-50 hover:shadow-[0_0_30px_rgba(255,255,255,.25)] transition-all">Notify me</button>
