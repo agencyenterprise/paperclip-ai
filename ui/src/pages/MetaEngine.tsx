@@ -143,6 +143,12 @@ export function MetaEngine() {
     (i) => i.status === "in_progress" || i.status === "todo",
   );
 
+  // Recent completed/failed builds (last 5, newest first)
+  const recentFinishedBuilds = (metaIssues ?? [])
+    .filter((i) => i.status === "done" || i.status === "cancelled")
+    .sort((a, b) => new Date(b.updatedAt ?? b.createdAt).getTime() - new Date(a.updatedAt ?? a.createdAt).getTime())
+    .slice(0, 5);
+
   // Launch mutation
   const launchMutation = useMutation({
     mutationFn: () => {
@@ -293,10 +299,10 @@ export function MetaEngine() {
       )}
 
       {/* ── Active builds ─────────────────────────────────────────────── */}
-      {activeBuilds.length > 0 && (
+      {(activeBuilds.length > 0 || recentFinishedBuilds.length > 0) && (
         <div>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Live builds
+            Builds
           </h2>
           <div className="space-y-2">
             {activeBuilds.map((issue) => (
@@ -316,6 +322,35 @@ export function MetaEngine() {
                     issue.status === "in_progress"
                       ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
                       : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {issue.status}
+                </span>
+              </div>
+            ))}
+            {recentFinishedBuilds.map((issue) => (
+              <div
+                key={issue.id}
+                className="border border-border rounded-lg px-4 py-3 bg-card flex items-center gap-3 opacity-70"
+              >
+                <span
+                  className={`w-4 h-4 shrink-0 flex items-center justify-center text-xs ${
+                    issue.status === "done" ? "text-green-500" : "text-muted-foreground"
+                  }`}
+                >
+                  {issue.status === "done" ? "✓" : "✕"}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{issue.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {issue.issueNumber} · {relativeTime(issue.updatedAt ?? issue.createdAt)}
+                  </p>
+                </div>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    issue.status === "done"
+                      ? "bg-green-500/10 text-green-600 dark:text-green-400"
+                      : "bg-red-500/10 text-red-600 dark:text-red-400"
                   }`}
                 >
                   {issue.status}
@@ -455,12 +490,23 @@ export function MetaEngine() {
                       {companyStats?.issueCount ?? 0} issues ·{" "}
                       {relativeTime(company.createdAt)}
                     </span>
-                    <Link
-                      to={`/showcase/${slug}`}
-                      className="text-xs font-medium text-primary flex items-center gap-0.5 hover:underline"
-                    >
-                      View showcase <ChevronRight className="h-3 w-3" />
-                    </Link>
+                    {meta.demo ? (
+                      <a
+                        href={meta.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-medium text-primary flex items-center gap-0.5 hover:underline"
+                      >
+                        Open app <ExternalLink className="h-3 w-3" />
+                      </a>
+                    ) : (
+                      <Link
+                        to={`/showcase/${slug}`}
+                        className="text-xs font-medium text-primary flex items-center gap-0.5 hover:underline"
+                      >
+                        View showcase <ChevronRight className="h-3 w-3" />
+                      </Link>
+                    )}
                   </div>
                 </div>
               );
