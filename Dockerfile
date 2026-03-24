@@ -53,4 +53,4 @@ ENV NODE_ENV=production \
 # VOLUME ["/paperclip"]
 EXPOSE 3100
 
-CMD ["npx", "tsx", "server/src/index.ts"]
+CMD ["./server/node_modules/.bin/tsx", "server/src/index.ts"]
