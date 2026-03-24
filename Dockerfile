@@ -35,7 +35,7 @@ RUN pnpm --filter @paperclipai/db build || true
 FROM base AS production
 WORKDIR /app
 COPY --from=build /app /app
-RUN npm install --global --omit=dev @anthropic-ai/claude-code@latest @openai/codex@latest opencode-ai \
+RUN npm install --global --omit=dev tsx @anthropic-ai/claude-code@latest @openai/codex@latest opencode-ai \
   && mkdir -p /paperclip/instances/default
 
 ENV NODE_ENV=production \
@@ -53,4 +53,4 @@ ENV NODE_ENV=production \
 # VOLUME ["/paperclip"]
 EXPOSE 3100
 
-CMD ["./server/node_modules/.bin/tsx", "server/src/index.ts"]
+CMD ["tsx", "server/src/index.ts"]
