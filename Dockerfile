@@ -36,7 +36,16 @@ FROM base AS production
 WORKDIR /app
 COPY --from=build /app /app
 RUN npm install --global --omit=dev tsx @anthropic-ai/claude-code@latest @openai/codex@latest opencode-ai \
-  && mkdir -p /paperclip/instances/default
+  && mkdir -p /paperclip/instances/default /workspaces
+
+# Copy meta-engine-workspace (agent instructions, templates, idea sources)
+COPY meta-engine-workspace /meta-engine-workspace
+
+# Create non-root user so claude --dangerously-skip-permissions works
+RUN useradd -m -s /bin/bash paperclip \
+  && chown -R paperclip:paperclip /paperclip /workspaces /meta-engine-workspace /app
+
+USER paperclip
 
 ENV NODE_ENV=production \
   HOME=/paperclip \
